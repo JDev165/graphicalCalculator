@@ -1,1 +1,1 @@
-# graphicalCalculator
+# Graphical Python Calculator
