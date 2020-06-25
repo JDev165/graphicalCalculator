@@ -4,15 +4,17 @@ from tkinter import *
 
 
 class GUI:
-    def __init__(self, title="Python Calculator", size="270x150"):
+    def __init__(self, title="Python Calculator", size="290x232"):
         self._gui = Tk()
         self._title = title
         self._size = size
         self._result = None
         self._expression = None
-        self._positions = {' 0 ': (1, 0), ' 1 ': (
-            1, 1), ' 2 ': (1, 2), ' 3 ': (1, 3), ' 4 ': (2, 0), ' 5 ': (2, 1),
-            ' 6 ': (2, 2), ' 7 ': (2, 3), ' 8 ': (2, 4), ' 9 ': (3, 0)}
+        self._positions = {' C ': (2, 0), ' +/- ': (2, 1), ' % ': (2, 2), ' ÷ ': (2, 3),
+                           ' 7 ': (3, 0), ' 8 ': (3, 1), ' 9 ': (3, 2), ' x ': (3, 3),
+                           ' 4 ': (4, 0), ' 5 ': (4, 1), ' 6 ': (4, 2), ' + ': (4, 3),
+                           ' 1 ': (5, 0), ' 2 ': (5, 1), ' 3 ': (5, 2), ' - ': (5, 3),
+                           ' 0 ': (6, 0), ' . ': (6, 2), ' = ': (6, 3)}
 
     def create(self):
         self._configure()
@@ -30,15 +32,15 @@ class GUI:
         placeholder = StringVar()
         placeholder.set("Enter your expression")
         field = Entry(self._gui, textvariable=placeholder)
-        field.grid(columnspan=4, ipadx=40)
+        field.grid(rowspan=2, columnspan=4, ipadx=49, ipady=12)
 
     def _create_number_buttons(self):
-        for number in range(0, 10):
-            number = " " + str(number) + " "
-            button = Button(self._gui, text=number, fg='black',
-                            bg='red', height=1, width=7)
-            button.grid(row=self._positions[number]
-                        [0], column=self._positions[number][1])
+        for buttonText in self._positions.keys():
+            button = Button(self._gui, text=buttonText, height=2, width=1)
+            colspan = 2 if buttonText == " 0 " else 1
+            # sticky removes extra space btwn buttons
+            button.grid(row=self._positions[buttonText]
+                        [0], column=self._positions[buttonText][1], columnspan=colspan, sticky="nsew")
 
     def _set_input_field(self):
         pass
