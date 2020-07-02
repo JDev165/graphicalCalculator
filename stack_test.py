@@ -1,6 +1,7 @@
 import unittest
 import warnings
-from stack import *
+import stack
+import expression
 
 
 class TestLinkedListStack(unittest.TestCase):
@@ -8,30 +9,47 @@ class TestLinkedListStack(unittest.TestCase):
         warnings.simplefilter('ignore', category=DeprecationWarning)
 
     def test_stack_push(self):
-        expected_operators = ['÷', 'x', '+', '-', '(', ')']
-        expression = '(2+2)x(2+2)'
-        parsed_expression = ['']
-        operators = LinkedListStack()
-        operands = LinkedListStack()
+        grouping_operators = ['(', ')']
+        operators = stack.LinkedListStack()
+        operands = stack.LinkedListStack()
+        parsed_expression = expression.Expression('(2+2)x(2+2)').parse()
+        expected_operators = ['+', 'x', '+']
+        expected_operands = ['2', '2', '2', '2']
 
-        for token in expression:
-            last_token = parsed_expression[-1]
-            if (last_token.isdigit() or '.' in last_token or last_token == '') and (token not in expected_operators):
-                parsed_expression[-1] += token
-            else:
-                parsed_expression.append(token)
-
-        parsed_expression = ' '.join(parsed_expression)
+        results_operators = []
+        results_operands = []
 
         for token in parsed_expression:
             if token in expected_operators:
-                operands.push(token)
-            elif token != ' ':
                 operators.push(token)
+            elif token != '' and token not in grouping_operators:
+                operands.push(token)
 
-        operator = operators.tail
-        index = 0
-        while(operator.next):
-            self.assertEqual(operator.value, parsed_expression[index])
-            index += 1
-            operator = operator.next
+        node = operators.getTail()
+        while(node):
+            results_operators.append(node.value)
+            node = node.next
+
+        node = operands.getTail()
+        while(node):
+            results_operands.append(node.value)
+            node = node.next
+
+        self.assertTrue(results_operators == expected_operators)
+        self.assertTrue(results_operands == expected_operands)
+
+        del operands, operators
+
+        # print(results_operators)
+        # print(expected_operators)
+        # print(results_operands)
+        # print(expected_operands)
+
+
+# def main():
+#     test = TestLinkedListStack()
+#     test.test_stack_push()
+
+
+# if __name__ == "__main__":
+#     main()
