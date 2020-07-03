@@ -19,7 +19,7 @@ class LinkedListStack:
         self._size = 0
 
     def push(self, value):
-        if(self._isEmpty()):
+        if(self.isEmpty()):
             self._head = Node(value)
             self._tail = self._head
         else:
@@ -30,14 +30,14 @@ class LinkedListStack:
         self._size += 1
 
     def pop(self):
-        if(self._isEmpty()):
+        if(self.isEmpty()):
             raise IndexError("Stack is empty")
         else:
             popped = self._head.value
             self._head = self._head.previous
             return popped
 
-    def _isEmpty(self):
+    def isEmpty(self):
         return self._head is None
 
     def _peek(self):
