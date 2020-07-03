@@ -1,6 +1,6 @@
 # Linked List Stack vs Array/List Stack
-# LLS better in this case because push/pop is O(1)
-# ALS ammortized worst case is O(n) becuase of the resize (python arrays/list would still have to do this in the background)
+# LLS is better in this case because push/pop is O(1)
+# ALS ammortized worst case is O(n) because of the resize (python arrays/list would still have to do this in the background)
 # Chose speed over space. LLS use up extra space for pointer references.
 
 class Node:
