@@ -1,15 +1,52 @@
+from stack import LinkedListStack
+
 # Don't forget to add Python function annotations
 
 
 class Expression:
     def __init__(self, exp):
         # DST = Data Structure
-        self.expressionDST = None
-        self.expected_operators = ['÷', 'x', '+', '-', '(', ')']
+        self.expressionOperands = LinkedListStack()
+        self.expressionOperators = LinkedListStack()
+        self.expected_operators = {'÷': '/', 'x': '*',
+                                   '+': '+', '-': '-', '(': '(', ')': ')'}
         self.exp = exp
 
-    def save(self, data):
-        pass
+    def evaluate(self):
+        parsed_expression = self.parse()
+        for token in parsed_expression:
+            if token == ')':
+                rightOperand = self.expressionOperands.pop()
+                leftOperand = self.expressionOperands.pop()
+                operator = self.expressionOperators.pop()
+
+                result = self._performOperation(
+                    leftOperand, rightOperand, operator)
+                self._save(result, self.expressionOperands)
+            elif token in self.expected_operators:
+                token = self.expected_operators[token]
+                self._save(token, self.expressionOperators)
+            else:
+                self._save(token, self.expressionOperands)
+
+        finalResult = self.expressionOperands.pop()
+        return finalResult
+
+    def _performOperation(self, left, right, op):
+        result = 0
+        if op == '+':
+            result = eval(left + right)
+        elif op == '-':
+            result = eval(left - right)
+        elif op == '/':
+            result = eval(left / right)
+        else:
+            result = eval(left * right)
+
+        return result
+
+    def _save(self, data, stack):
+        stack.push(data)
 
     def parse(self):
         parsed_expression = ['']
@@ -22,8 +59,12 @@ class Expression:
 
         return parsed_expression
 
-    def evaluate(self):
-        pass
 
-    def clear(self):
-        pass
+def main():
+    exp = Expression('(2.05+20x(100÷2))x((5-2)+2)))')
+    result = exp.evaluate()
+    print(result)
+
+
+if __name__ == "__main__":
+    main()
