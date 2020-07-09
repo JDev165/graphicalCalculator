@@ -1,4 +1,6 @@
 from tkinter import *
+from expression import Expression
+from result import Result
 
 # Don't forget to add Python function annotations
 
@@ -8,6 +10,8 @@ class GUI:
         self._gui = Tk()
         self._title = title
         self._size = size
+        placeholder = StringVar().set("Enter your expression")
+        self._field = Entry(self._gui, textvariable=placeholder)
         self._result = None
         self._expression = None
         self._positions = {' C ': (2, 0), ' +/- ': (2, 1), ' % ': (2, 2), ' ÷ ': (2, 3),
@@ -19,8 +23,7 @@ class GUI:
     def create(self):
         self._configure()
         self._create_input_field()
-        self._create_number_buttons()
-
+        self._create_buttons()
         self._gui.mainloop()
 
     def _configure(self):
@@ -29,18 +32,29 @@ class GUI:
         self._gui.geometry(self._size)
 
     def _create_input_field(self):
-        placeholder = StringVar()
-        placeholder.set("Enter your expression")
-        field = Entry(self._gui, textvariable=placeholder)
-        field.grid(rowspan=2, columnspan=4, ipadx=49, ipady=12)
+        self._field.grid(rowspan=2, columnspan=4, ipadx=49, ipady=12)
 
-    def _create_number_buttons(self):
+    def _create_buttons(self):
         for buttonText in self._positions.keys():
-            button = Button(self._gui, text=buttonText, height=2, width=1)
+            # For some reason the last buttonText, ' = ', always get called
+            print(buttonText)
+            button = Button(self._gui, text=buttonText, height=2,
+                            width=1, command=lambda: self._button_action(buttonText))
             colspan = 2 if buttonText == " 0 " else 1
             # sticky removes extra space btwn buttons
-            button.grid(row=self._positions[buttonText]
-                        [0], column=self._positions[buttonText][1], columnspan=colspan, sticky="nsew")
+            button.grid(row=self._positions[buttonText][0],
+                        column=self._positions[buttonText][1], columnspan=colspan, sticky="nsew")
+
+    def _button_action(self, action):
+        action = action.strip()
+        print(action)
+        if action == '=':
+            final_expression = self._field.get()
+            # print(final_expression)
+            # expression = Expression(final_expression)
+        elif action.isdigit():
+            self._field.insert(0, action)
+            print(action)
 
     def _set_input_field(self):
         pass

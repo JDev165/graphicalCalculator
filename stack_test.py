@@ -142,10 +142,10 @@ class TestLinkedListStack(unittest.TestCase):
         # print(expected_operands)
 
 
-def main():
-    test = TestLinkedListStack()
-    test.test_stack_pop()
+# def main():
+#     test = TestLinkedListStack()
+#     test.test_stack_pop()
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
