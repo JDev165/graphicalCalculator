@@ -15,11 +15,15 @@ class Expression:
     def evaluate(self):
         parsed_expression = self.parse()
         for token in parsed_expression:
-            if token == ')':
+            if token == '(':
+                continue
+            elif token == ')':
                 rightOperand = self.expressionOperands.pop()
                 leftOperand = self.expressionOperands.pop()
                 operator = self.expressionOperators.pop()
-
+                # print(rightOperand)
+                # print(leftOperand)
+                # print(operator)
                 result = self._performOperation(
                     leftOperand, rightOperand, operator)
                 self._save(result, self.expressionOperands)
@@ -27,21 +31,24 @@ class Expression:
                 token = self.expected_operators[token]
                 self._save(token, self.expressionOperators)
             else:
+                token = self._convert(token)
                 self._save(token, self.expressionOperands)
 
         finalResult = self.expressionOperands.pop()
         return finalResult
 
+    def _convert(self, token):
+        return float(token) if '.' in token else int(token)
+
     def _performOperation(self, left, right, op):
-        result = 0
         if op == '+':
-            result = eval(left + right)
+            result = left + right
         elif op == '-':
-            result = eval(left - right)
+            result = left - right
         elif op == '/':
-            result = eval(left / right)
+            result = left / right
         else:
-            result = eval(left * right)
+            result = left * right
 
         return result
 
@@ -57,14 +64,4 @@ class Expression:
             else:
                 parsed_expression.append(token)
 
-        return parsed_expression
-
-
-def main():
-    exp = Expression('(2.05+20x(100÷2))x((5-2)+2)))')
-    result = exp.evaluate()
-    print(result)
-
-
-if __name__ == "__main__":
-    main()
+        return parsed_expression[1:]

@@ -34,7 +34,9 @@ class LinkedListStack:
             raise IndexError("Stack is empty")
         else:
             popped = self._head.value
-            self._head = self._head.previous
+            previousHead = self._head
+            self._head = previousHead.previous
+            del previousHead
             return popped
 
     def isEmpty(self):
