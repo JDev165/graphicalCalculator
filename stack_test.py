@@ -5,8 +5,6 @@ import expression
 
 
 class TestLinkedListStack(unittest.TestCase):
-    def setUp(self):
-        warnings.simplefilter('ignore', category=DeprecationWarning)
 
     def test_stack_pop(self):
         grouping_operators = ['(', ')']
