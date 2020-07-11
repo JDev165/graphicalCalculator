@@ -1,12 +1,11 @@
 from tkinter import *
 from expression import Expression
-from result import Result
 
 # Don't forget to add Python function annotations
 
 
 class GUI:
-    def __init__(self, title="Python Calculator", size="290x232"):
+    def __init__(self, title="Python Calculator", size="290x230"):
         self._gui = Tk()
         self._title = title
         self._size = size
@@ -14,11 +13,11 @@ class GUI:
         self._field = Entry(self._gui, textvariable=placeholder)
         self._result = None
         self._expression = None
-        self._positions = {' C ': (2, 0), ' +/- ': (2, 1), ' % ': (2, 2), ' ÷ ': (2, 3),
-                           ' 7 ': (3, 0), ' 8 ': (3, 1), ' 9 ': (3, 2), ' x ': (3, 3),
-                           ' 4 ': (4, 0), ' 5 ': (4, 1), ' 6 ': (4, 2), ' + ': (4, 3),
-                           ' 1 ': (5, 0), ' 2 ': (5, 1), ' 3 ': (5, 2), ' - ': (5, 3),
-                           ' 0 ': (6, 0), ' . ': (6, 2), ' = ': (6, 3)}
+        self._positions = {' ( ': (2, 0), ' ) ': (2, 1), ' CE ': (2, 2), ' - ': (2, 3),
+                           ' 7 ': (3, 0), ' 8 ': (3, 1), ' 9 ': (3, 2), ' ÷ ': (3, 3),
+                           ' 4 ': (4, 0), ' 5 ': (4, 1), ' 6 ': (4, 2), ' x ': (4, 3),
+                           ' 1 ': (5, 0), ' 2 ': (5, 1), ' 3 ': (5, 2), ' + ': (5, 3),
+                           ' 0 ': (6, 0), ' . ': (6, 2), ' = ': (6, 3), }
 
     def create(self):
         self._configure()
@@ -36,10 +35,8 @@ class GUI:
 
     def _create_buttons(self):
         for buttonText in self._positions.keys():
-            # For some reason the last buttonText, ' = ', always get called
-            print(buttonText)
             button = Button(self._gui, text=buttonText, height=2,
-                            width=1, command=lambda: self._button_action(buttonText))
+                            width=1, command=lambda action=buttonText: self._button_action(action))
             colspan = 2 if buttonText == " 0 " else 1
             # sticky removes extra space btwn buttons
             button.grid(row=self._positions[buttonText][0],
@@ -47,17 +44,16 @@ class GUI:
 
     def _button_action(self, action):
         action = action.strip()
-        print(action)
         if action == '=':
             final_expression = self._field.get()
-            # print(final_expression)
-            # expression = Expression(final_expression)
-        elif action.isdigit():
-            self._field.insert(0, action)
-            print(action)
-
-    def _set_input_field(self):
-        pass
+        elif action == 'CE':
+            current = str(self._field.get())[:-1]
+            self._field.delete(0, END)
+            self._field.insert(0, str(current))
+        else:
+            current = self._field.get()
+            self._field.delete(0, END)
+            self._field.insert(0, str(current) + str(action))
 
 
 def main():
