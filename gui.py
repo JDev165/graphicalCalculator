@@ -45,7 +45,7 @@ class GUI:
         action = action.strip()
         if action == '=':
             final_expression = self._field.get()
-            if final_expression == '':
+            if final_expression == '' or '(' not in final_expression or ')' not in final_expression:
                 self._field.delete(0, END)
                 self._field.insert(0, 'Invalid Expression')
             else:

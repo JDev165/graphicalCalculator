@@ -21,9 +21,6 @@ class Expression:
                 rightOperand = self.expressionOperands.pop()
                 leftOperand = self.expressionOperands.pop()
                 operator = self.expressionOperators.pop()
-                # print(rightOperand)
-                # print(leftOperand)
-                # print(operator)
                 result = self._performOperation(
                     leftOperand, rightOperand, operator)
                 self._save(result, self.expressionOperands)
