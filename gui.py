@@ -11,7 +11,6 @@ class GUI:
         self._size = size
         placeholder = StringVar().set("Enter your expression")
         self._field = Entry(self._gui, textvariable=placeholder)
-        self._result = None
         self._expression = None
         self._positions = {' ( ': (2, 0), ' ) ': (2, 1), ' CE ': (2, 2), ' - ': (2, 3),
                            ' 7 ': (3, 0), ' 8 ': (3, 1), ' 9 ': (3, 2), ' ÷ ': (3, 3),
@@ -46,6 +45,14 @@ class GUI:
         action = action.strip()
         if action == '=':
             final_expression = self._field.get()
+            if final_expression == '':
+                self._field.delete(0, END)
+                self._field.insert(0, 'Invalid Expression')
+            else:
+                self._expression = Expression(final_expression)
+                self._field.delete(0, END)
+                self._field.insert(0, self._expression.evaluate())
+                del self._expression
         elif action == 'CE':
             current = str(self._field.get())[:-1]
             self._field.delete(0, END)
