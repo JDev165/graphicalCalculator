@@ -3,4 +3,6 @@
 
 Implemented in Python and Tkinter.
 
-Uses data structures like BST and Stack to evaluate entered expressions.
+Currently uses Dijkstra's two-stack algorithm to evaluate. 
+
+Will be implementing the evaluation with other data structures soon.
